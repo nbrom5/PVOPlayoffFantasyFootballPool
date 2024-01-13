@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantasy Football Matchup</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #282c34;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #61dafb;
+            margin: 20px 0;
+        }
+
+        .matchup {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        
+        .matchup2 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .team {
+            background-color: #394240;
+            border: 1px solid #61dafb;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 15px;
+            width: 225px;
+            text-align: left;
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .list-container {
+            display: flex;
+            justify-content: space-between; /* Adjust as needed */
+        }
+        
+        .listPlayerStds {
+            background-color: #394240;
+            border: 1px solid #61dafb;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 15px;
+            width: 240px;
+            transition: transform 0.2s ease-in-out; 
+        }
+        .listStds {
+            background-color: #394240;
+            border: 1px solid #61dafb;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 15px;
+            width: 150px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .team:hover {
+            transform: scale(1.05);
+        }
+        
+        .listStds:hover {
+            transform: scale(1.05)
+        }
+        
+        .listPlayerStds:hover {
+            transform: scale(1.05)
+        }
+
+        .team h2 {
+            color: #61dafb;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .team ul {
+            list-style-type: none;
+            counter-reset: item;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .team li {
+          display: flex;
+          align-items: center;
+          margin-bottom: 10px;
+          
+        }
+        
+        .listPlayerStds h1 {
+            color: #61dafb;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        
+        .listPlayerStds ol {
+          list-style-type: none;
+          counter-reset: item;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .listPlayerStds li {
+          display: flex;
+          align-items: center;
+          margin-bottom: 10px;
+          font-size: 20px;
+          font-family: 'impact', fantasy;
+        }
+        
+        .listPlayerStds li:before {
+          content: counter(item);
+          counter-increment: item;
+          font-size: 20px;
+          font-weight: bold;
+          border-radius: 50%;
+          border: 2px solid #61dafb;
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 10px;
+          box-sizing: content-box;
+        }
+        
+        .listStds h1 {
+            color: #61dafb;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        
+        .listPlayerStds h1 {
+            color: #61dafb;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .listStds ol {
+          list-style-type: none;
+          counter-reset: item;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .listStds li {
+          display: flex;
+          align-items: center;
+          margin-bottom: 10px;
+          font-size: 30px;
+          font-family: 'impact', fantasy;
+        }
+        
+        .listStds li:before {
+          content: counter(item);
+          counter-increment: item;
+          font-size: 20px;
+          font-weight: bold;
+          border-radius: 50%;
+          border: 2px solid #61dafb;
+          width: 30px;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 10px;
+          box-sizing: content-box;
+        }
+        
+        .listStds li:nth-child(2):before {
+          background-color: #c0c0c0; /* Silver background */
+          color: #808080; /* Silver color */
+          content: "\1F948"; /* Silver crown emoji */
+          box-sizing: content-box;
+        }
+        
+        .listStds li:nth-child(3):before {
+          background-color: #cd7f32; /* Bronze background */
+          color: #8B4513; /* Bronze color */
+          content: "\1F949"; /* Bronze crown emoji */
+          box-sizing: content-box;
+        }
+        
+        .listStds li:first-child:before {
+          background-color: #ffe08a;
+          color: #ffa500;
+          content: "\1F451"; /* Crown emoji */
+          box-sizing: content-box;
+        }
+        
+        
+        .trophy {
+          font-size: 150px; /* Adjust the font size as needed */
+          line-height: 1;
+          position: absolute;
+          top: 200%; /* Center vertically */
+          transform: translateY(-50%);
+        }
+
+        .left-trophy {
+          left: 80px; /* Adjust the left position as needed */
+        }
+
+        .right-trophy {
+          right: 80px; /* Adjust the right position as needed */
+        }
+        
+    </style>
+</head>
+<body>
+    
+<h1>PVO Playoff Fantasy Football</h1>
+
+<div class="matchup">
+    <div class="team" id="team1">
+        <h2>Team 1</h2>
+        <ul id="team1Positions">
+        </ul>
+        <ul id="team1Players">
+            <!-- Team 1 players will be dynamically added here -->
+        </ul>
+        <span>
+            <h4 id="team1Total">Total: 0 </h4>
+        </span>
+        
+    </div>
+
+    <div class="team" id="team2">
+        <h2>Team 2</h2>
+        <ul id="team2Positions">
+        </ul>
+        <ul id="team2Players">
+            <!-- Team 2 players will be dynamically added here -->
+        </ul>
+        <span>
+            <h4 id="team2Total">Total: 0</h4>
+        </span>
+    </div>
+
+    <div class="team" id="team3">
+        <h2>Team 3</h2>
+        <ul id="team3Positions">
+        </ul>
+        <ul id="team3Players">
+            <!-- Team 1 players will be dynamically added here -->
+        </ul>
+        <span>
+            <h4 id="team3Total">Total: 0</h4>
+        </span>
+    </div>
+
+    <div class="team" id="team4">
+        <h2>Team 4</h2>
+        <ul id="team4Positions">
+        </ul>
+        <ul id="team4Players">
+            <!-- Team 2 players will be dynamically added here -->
+        </ul>
+        <span>
+            <h4 id="team4Total">Total: 0</h4>
+        </span>
+    </div>
+    <!-- Add similar blocks for other teams -->
+
+</div>
+
+<div class="matchup2">
+    <div class="team" id="team5">
+        <h2>Team 5</h2>
+        <ul id="team5Positions">
+        </ul>
+        <ul id="team5Players">
+            <!-- Team 1 players will be dynamically added here -->
+        </ul>
+        <span>
+            <h4  id="team5Total">Total: 0</h4>
+        </span>
+    </div>
+
+    <div class="team" id="team6">
+        <h2>Team 6</h2>
+        <ul id="team6Positions">
+        </ul>
+        <ul id="team6Players">
+            <!-- Team 2 players will be dynamically added here -->
+        </ul>
+        <span>
+            <h4 id="team6Total">Total: 0</h4>
+        </span>
+    </div>
+
+    <div class="team" id="team7">
+        <h2>Team 7</h2>
+        <ul id="team7Positions">
+        </ul>
+        <ul id="team7Players">
+            <!-- Team 1 players will be dynamically added here -->
+        </ul>
+        <span>
+            <h4 id=team7Total>Total: 0</h4>
+        </span>
+    </div>
+
+    <div class="team" id="team8">
+        <h2>Team 8</h2>
+        <ul id="team8Positions">
+        </ul>
+        <ul id="team8Players">
+            <!-- Team 2 players will be dynamically added here -->
+        </ul>
+        <span>
+            <h4 id=team8Total>Total: 0</h4>
+        </span>
+    </div>
+</div>
+
+<div class="list-container">
+    <div class="trophy left-trophy">🏆</div>
+    <!-- Your content for the bottom section goes here -->
+    <div class=listStds id="standings">
+        <h1 id="standingsTitle">
+            Standings
+        </h1>
+        <ol id="listStandings">
+            <span>
+                <h3 id="loading">&emsp;&emsp;Loading...</h3>
+            </span>
+        </ol>
+    </div>
+    <div class=listPlayerStds id="playerStandings">
+        <h1 id="playerStandingsTitle">
+            Top Scorers
+        </h1>
+        <ol id="listPlayerStandings">
+            <span>
+                <h3 id="noPlayers">&emsp;&emsp;&emsp;&emsp;&nbsp;Loading...</h3>
+            </span>
+        </ol>
+    </div>
+    <div class="trophy right-trophy">🏆</div>
+</div>
+
+<!-- Repeat the matchup block for additional matchups -->
+
+<script>
+    var team1 = [];
+    var team2 = [];
+    var team3 = [];
+    var team4 = [];
+    var team5 = [];
+    var team6 = [];
+    var team7 = [];
+    var team8 = [];
+    var points1 = [];
+    var points2 = [];
+    var points3 = [];
+    var points4 = [];
+    var points5 = [];
+    var points6 = [];
+    var points7 = [];
+    var points8 = [];
+    var players1 = [];
+    var players2 = [];
+    var players3 = [];
+    var players4 = [];
+    var players5 = [];
+    var players6 = [];
+    var players7 = [];
+    var players8 = [];
+    var total1 = 0;
+    var total2 = 0;
+    var total3 = 0;
+    var total4 = 0;
+    var total5 = 0;
+    var total6 = 0;
+    var total7 = 0;
+    var total8 = 0;
+    var array_total = [];
+    var player_array_name = [];
+    var player_array_score = [];
+    var trig = false;
+    
+    function getPlayerName(id, teamNum, i) {
+        // Sleeper API endpoint for fetching player stats
+        const apiUrl = `https://api.sleeper.com/stats/nfl/player/${id}?season=2023&season_type=post&grouping=season`;
+
+        // Making the GET request using the fetch function
+        fetch(apiUrl)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            const name = data.player.first_name + " " + data.player.last_name;
+            const ptsPpr = data.stats.pts_ppr;
+            const playerPos = data.player.position;
+            
+            player_array_name.push(name);
+            player_array_score.push(ptsPpr);
+            
+            switch(teamNum) {
+                case 1:
+                    players1[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + ptsPpr;
+                    populateTeam('team1', players1.slice(i-1, i));
+                    total1 += ptsPpr;
+                    document.getElementById('team1Total').innerHTML = `Total: ${total1.toFixed(2)}`
+                    array_total[i-1] = total1;
+                    break;
+                case 2:
+                    players2[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + ptsPpr;
+                    populateTeam('team2', players2.slice(i-1, i));
+                    total2 += ptsPpr;
+                    total2.toFixed(2);
+                    document.getElementById('team2Total').innerHTML = `Total: ${total2.toFixed(2)}`
+                    array_total[i-1] = total2;
+                    break;
+                case 3:
+                    players3[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + ptsPpr;
+                    populateTeam('team3', players3.slice(i-1, i));
+                    total3 += ptsPpr;
+                    document.getElementById('team3Total').innerHTML = `Total: ${total3.toFixed(2)}`
+                    array_total[i-1] = total3;
+                    break;
+                case 4:
+                    players4[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + ptsPpr;
+                    populateTeam('team4', players4.slice(i-1, i));
+                    total4 += ptsPpr;
+                    document.getElementById('team4Total').innerHTML = `Total: ${total4.toFixed(2)}`
+                    array_total[i-1] = total4;
+                    break;
+                case 5:
+                    players5[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + ptsPpr;
+                    populateTeam('team5', players5.slice(i-1, i));
+                    total5 += ptsPpr;
+                    document.getElementById('team5Total').innerHTML = `Total: ${total5.toFixed(2)}`
+                    array_total[i-1] = total5;
+                    break;
+                case 6:
+                    players6[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + ptsPpr;
+                    populateTeam('team6', players6.slice(i-1, i));
+                    total6 += ptsPpr;
+                    document.getElementById('team6Total').innerHTML = `Total: ${total6.toFixed(2)}`
+                    array_total[i-1] = total6;
+                    break;
+                case 7:
+                    players7[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + ptsPpr;
+                    populateTeam('team7', players7.slice(i-1, i));
+                    total7 += ptsPpr;
+                    document.getElementById('team7Total').innerHTML = `Total: ${total7.toFixed(2)}`
+                    array_total[i-1] = total7;
+                    break;
+                case 8:
+                    players8[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + ptsPpr;
+                    populateTeam('team8', players8.slice(i-1, i));
+                    total8 += ptsPpr;
+                    document.getElementById('team8Total').innerHTML = `Total: ${total8.toFixed(2)}`
+                    array_total[i-1] = total8;
+                    break;
+            }
+        
+            
+            // Function to populate a team with players
+            function populateTeam(teamId, teamPlayers) {
+                const teamElement = document.getElementById(teamId);
+                const playerListElement = teamElement.querySelector('ul');
+
+                teamPlayers.forEach(player => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = player;
+                    playerListElement.appendChild(listItem);
+                });
+            }
+            
+          })
+          .catch(error => {
+            trig = true;
+            console.log('Error fetching playoff stats...\n Searching for previous season.');
+          });
+        setTimeout(() => {
+            if (trig) {
+                const apiUrl_new = `https://api.sleeper.com/stats/nfl/player/${id}?season=2023&season_type=regular&grouping=season`;
+
+            // Making the GET request using the fetch function
+                fetch(apiUrl_new)
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                  })
+                  .then(data => {
+                    const name = data.player.first_name + " " + data.player.last_name;
+                    const ptsPpr = data.stats.pts_ppr;
+                    const playerPos = data.player.position;
+
+                    switch(teamNum) {
+                        case 1:
+                            players1[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                            populateTeam('team1', players1.slice(i-1, i));
+                            break;
+                        case 2:
+                            players2[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                            populateTeam('team2', players2.slice(i-1, i));
+                            break;
+                        case 3:
+                            players3[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                            populateTeam('team3', players3.slice(i-1, i));
+                            break;
+                        case 4:
+                            players4[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                            populateTeam('team4', players4.slice(i-1, i));
+                            break;
+                        case 5:
+                            players5[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                            populateTeam('team5', players5.slice(i-1, i));
+                            break;
+                        case 6:
+                            players6[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                            populateTeam('team6', players6.slice(i-1, i));
+                            break;
+                        case 7:
+                            players7[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                            populateTeam('team7', players7.slice(i-1, i));
+                            break;
+                        case 8:
+                            players8[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                            populateTeam('team8', players8.slice(i-1, i));
+                            break;
+                    }
+                    trig = false;
+                    // Function to populate a team with players
+                    function populateTeam(teamId, teamPlayers) {
+                        const teamElement = document.getElementById(teamId);
+                        const playerListElement = teamElement.querySelector('ul');
+
+                        teamPlayers.forEach(player => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = player;
+                            playerListElement.appendChild(listItem);
+                        });
+                    }
+
+                  })
+                  .catch(error => {
+                    console.error('Error fetching player stats:', error);
+                  });
+            }
+        }, 200);
+        
+    }
+    getPlayerName(4046, 1, 1);
+    setTimeout(() => {
+        getPlayerName(9226, 1, 2);
+    }, 500);
+    setTimeout(() => {
+        getPlayerName(2749, 1, 3);
+    }, 1000);
+    setTimeout(() => {
+        getPlayerName(2309, 1, 4);
+    }, 1500);
+    setTimeout(() => {
+        getPlayerName(5872, 1, 5);
+    }, 2000);
+    setTimeout(() => {
+        getPlayerName(4217, 1, 6);
+    }, 2500);
+    setTimeout(() => {
+        getPlayerName(1264, 1, 7);
+    }, 3000);
+    setTimeout(() => {
+        getPlayerName('SF', 1, 8);
+    }, 3500);
+    
+    getPlayerName(9758, 2, 1);
+    setTimeout(() => {
+        getPlayerName(8205, 2, 2);
+    }, 500);
+    setTimeout(() => {
+        getPlayerName(8150, 2, 3);
+    }, 1000);
+    setTimeout(() => {
+        getPlayerName(6943, 2, 4);
+    }, 1500);   
+    setTimeout(() => {
+        getPlayerName(5872, 2, 5);
+    }, 2000);    
+    setTimeout(() => {
+        getPlayerName(5022, 2, 6);
+    }, 2500);   
+    setTimeout(() => {
+        getPlayerName(4195, 2, 7);
+    }, 3000);   
+    setTimeout(() => {
+        getPlayerName('PHI', 2, 8);
+    }, 3500);
+    
+    
+    getPlayerName(6904, 3, 1);
+    setTimeout(() => {
+        getPlayerName(4034, 3, 2);
+    }, 500);    
+    setTimeout(() => {
+        getPlayerName(5967, 3, 3);
+    }, 1000);  
+    setTimeout(() => {
+        getPlayerName(3321, 3, 4);
+    }, 1500);   
+    setTimeout(() => {
+        getPlayerName(5859, 3, 5);
+    }, 2000);    
+    setTimeout(() => {
+        getPlayerName(4217, 3, 6);
+    }, 2500);   
+    setTimeout(() => {
+        getPlayerName(1264, 3, 7);
+    }, 3000);    
+    setTimeout(() => {
+        getPlayerName('PHI', 3, 8);
+    }, 3500);
+    
+    getPlayerName(6768, 4, 2);
+    setTimeout(() => {
+        getPlayerName(8138, 4, 1);
+    }, 500);
+    setTimeout(() => {
+        getPlayerName(4034, 4, 3);
+    }, 1000);    
+    setTimeout(() => {
+        getPlayerName(5859, 4, 4);
+    }, 1500);    
+    setTimeout(() => {
+        getPlayerName(2449, 4, 5);
+    }, 2000);    
+    setTimeout(() => {
+        getPlayerName(5022, 4, 6);
+    }, 2500);    
+    setTimeout(() => {
+        getPlayerName(4195, 4, 7);
+    }, 3000);    
+    setTimeout(() => {
+        getPlayerName('KC', 4, 8);
+    }, 3500);
+    
+    getPlayerName(4984, 5, 1);
+    setTimeout(() => {
+        getPlayerName(4034, 5, 2);
+    }, 500);    
+    setTimeout(() => {
+        getPlayerName(6790, 5, 3);
+    }, 1000);
+    setTimeout(() => {
+        getPlayerName(5859, 5, 4);
+    }, 1500);    
+    setTimeout(() => {
+        getPlayerName(2449, 5, 5);
+    }, 2000);   
+    setTimeout(() => {
+        getPlayerName(5022, 5, 6);
+    }, 2500);    
+    setTimeout(() => {
+        getPlayerName(4227, 5, 7);
+    }, 3000);    
+    setTimeout(() => {
+        getPlayerName('KC', 5, 8);
+    }, 3500);
+        
+    getPlayerName(7523, 6, 2);
+    setTimeout(() => {
+        getPlayerName(6790, 6, 1);
+    }, 500);
+    setTimeout(() => {
+        getPlayerName(8136, 6, 3);
+    }, 1000);    
+    setTimeout(() => {
+        getPlayerName(5859, 6, 4);
+    }, 1500);    
+    setTimeout(() => {
+        getPlayerName(7525, 6, 5);
+    }, 2000);    
+    setTimeout(() => {
+        getPlayerName(4217, 6, 6);
+    }, 2500);    
+    setTimeout(() => {
+        getPlayerName(4195, 6, 7);
+    }, 3000);    
+    setTimeout(() => {
+        getPlayerName('BUF', 6, 8);
+    }, 3500);
+        
+    getPlayerName(3294, 7, 1);  
+    setTimeout(() => {
+        getPlayerName(9221, 7, 2);
+    }, 500);    
+    setTimeout(() => {
+        getPlayerName(4034, 7, 3);
+    }, 1000);    
+    setTimeout(() => {
+        getPlayerName(7525, 7, 4);
+    }, 1500);    
+    setTimeout(() => {
+        getPlayerName(2449, 7, 5);
+    }, 2000);    
+    setTimeout(() => {
+        getPlayerName(5001, 7, 6);
+    }, 2500);    
+    setTimeout(() => {
+        getPlayerName(4227, 7, 7);
+    }, 3000);    
+    setTimeout(() => {    
+        getPlayerName('SF', 7, 8);
+    }, 3500);
+    
+    
+    getPlayerName(8183, 8, 2);
+    setTimeout(() => {
+        getPlayerName(4034, 8, 1);
+    }, 500);    
+    setTimeout(() => {
+        getPlayerName(8138, 8, 3);
+    }, 1000);    
+    setTimeout(() => {
+        getPlayerName(7525, 8, 4);
+    }, 1500);    
+    setTimeout(() => {
+        getPlayerName(2449, 8, 5);
+    }, 2000);    
+    setTimeout(() => {
+        getPlayerName(1466, 8, 6);
+    }, 2500);    
+    setTimeout(() => {
+        getPlayerName(4227, 8, 7);
+    }, 3000);    
+    setTimeout(() => {
+        getPlayerName('PHI', 8, 8);
+    }, 3500);
+    setTimeout(() => {
+
+        var unsorted_array = [total1, total2, total3, total4, total5, total6, total7, total8];
+        
+        var sorted_array = ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"];
+        
+        function sort_scores() {
+            for(let i = 1; i < unsorted_array.length; i++) {
+                for (let j = 0; j < i; j++) {
+                    if (unsorted_array[i] < unsorted_array[j]) {
+                        var temp1 = unsorted_array[i];
+                        unsorted_array[i] = unsorted_array[j];
+                        unsorted_array[j] = temp1;
+                        var temp2 = sorted_array[i];
+                        sorted_array[i] = sorted_array[j];
+                        sorted_array[j] = temp2;
+                    }
+                }
+            }
+            for(let i = 1; i < player_array_score.length; i++) {
+                for (let j = 0; j < i; j++) {
+                    if (player_array_score[i] < player_array_score[j]) {
+                        var temp1 = player_array_score[i];
+                        player_array_score[i] = player_array_score[j];
+                        player_array_score[j] = temp1;
+                        var temp2 = player_array_name[i];
+                        player_array_name[i] = player_array_name[j];
+                        player_array_name[j] = temp2;
+                    }
+                }
+            }
+            unsorted_array.reverse();
+            sorted_array.reverse();
+            player_array_name.reverse();
+            player_array_score.reverse();
+            
+            player_array_name = player_array_name.filter((value, index) => {
+                return player_array_name.indexOf(value) === index;
+            });
+            
+            player_array_score = player_array_score.filter((value, index) => {
+                return player_array_score.indexOf(value) === index;
+            });
+            
+            var white_space_array = [];
+            for (let i = 0; i < player_array_name.length; i++) {
+                white_space_array.push("\xa0\xa0");
+            }
+            const temp_array = white_space_array.map((element, index) => element + player_array_score[index]);
+            
+            const player_array_merged = player_array_name.map((element, index) => element + temp_array[index]);
+            
+            function populateTeamStandings(id, teams) {
+                const teamElement = document.getElementById(id);
+                const listElement = teamElement.querySelector('ol');
+
+                teams.forEach(team => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = team;
+                    listElement.appendChild(listItem);
+                });
+            }
+            function populatePlayerStandings(id, teams) {
+                const teamElement = document.getElementById(id);
+                const listElement = teamElement.querySelector('ol');
+                teams.forEach(team => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = team;
+                    listElement.appendChild(listItem);
+                });
+            }
+            
+            document.getElementById('loading').innerHTML = '';
+            populateTeamStandings('standings', sorted_array.slice(0, 8));
+            if (player_array_merged.length < 1) {
+                document.getElementById('noPlayers').innerHTML = "&emsp;&emsp;&emsp;No Players Yet";
+            } 
+            else {
+                document.getElementById('noPlayers').innerHTML = '';
+            }
+            populateTeamStandings('playerStandings', player_array_merged.slice(0, 10));
+        }
+        sort_scores();
+        
+        //var sorted_array = unsorted_array.sort();
+        //sorted_array = sorted_array.reverse();
+        console.log("Sorted Scores:", player_array_score);
+    }, 4000);
+</script>
+
+</body>
+</html>
