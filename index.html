@@ -367,9 +367,6 @@
                     Standings
                 </h1>
                 <ol id="listStandings">
-                    <span>
-                        <h3 id="loading">&emsp;&emsp;Loading...</h3>
-                    </span>
                 </ol>
             </div>
             <div class=listPlayerStds id="playerStandings">
@@ -851,8 +848,6 @@
                     listElement.appendChild(listItem);
                 });
             }
-            
-            document.getElementById('loading').innerHTML = '';
             populateTeamStandings('standings', sorted_array.slice(0, 8));
             if (player_array_merged.length < 1) {
                 document.getElementById('noPlayers').innerHTML = "&emsp;&emsp;&emsp;No Players Yet";
