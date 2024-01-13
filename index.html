@@ -211,21 +211,22 @@
           box-sizing: content-box;
         }
         
-        
-        .trophy {
-          font-size: 150px; /* Adjust the font size as needed */
-          line-height: 1;
-          position: absolute;
-          top: 200%; /* Center vertically */
-          transform: translateY(-50%);
-        }
-
-        .left-trophy {
-          left: 80px; /* Adjust the left position as needed */
-        }
-
-        .right-trophy {
-          right: 80px; /* Adjust the right position as needed */
+        @media only screen and (min-device-width: 768px) {
+            .trophy {
+              font-size: 150px; /* Adjust the font size as needed */
+              line-height: 1;
+              position: absolute;
+              top: 200%; /* Center vertically */
+              transform: translateY(-50%);
+            }
+    
+            .left-trophy {
+              left: 80px; /* Adjust the left position as needed */
+            }
+    
+            .right-trophy {
+              right: 80px; /* Adjust the right position as needed */
+            }
         }
         
     </style>
