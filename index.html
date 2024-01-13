@@ -210,6 +210,11 @@
           content: "\1F451"; /* Crown emoji */
           box-sizing: content-box;
         }
+        @media only screen and (max-device-width: 480px) {
+            .trophy {
+                visibility: hidden;
+            }
+        }
         
         @media only screen and (min-device-width: 768px) {
             .trophy {
