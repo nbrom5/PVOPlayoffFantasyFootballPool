@@ -422,9 +422,9 @@
     var player_array_score = [];
     var trig = false;
     
-    function getPlayerName(id, teamNum, i) {
+    function getPlayerName(id, teamNum, i, name, playerPos) {
         // Sleeper API endpoint for fetching player stats
-        const apiUrl = `https://api.sleeper.com/stats/nfl/player/${id}?season=2023&season_type=post&grouping=season`;
+        const apiUrl = `https://api.sleeper.com/stats/nfl/player/${id}?season=2023&season_type=post&grouping=week`;
 
         // Making the GET request using the fetch function
         fetch(apiUrl)
@@ -435,9 +435,9 @@
             return response.json();
           })
           .then(data => {
-            const name = data.player.first_name + " " + data.player.last_name;
-            const ptsPpr = data.stats.pts_ppr;
-            const playerPos = data.player.position;
+            const ptsPpr = data['1'].stats.pts_ppr;
+            
+            ptsPpr ??= 0;
             
             player_array_name.push(name);
             player_array_score.push(ptsPpr);
@@ -533,45 +533,46 @@
                     return response.json();
                   })
                   .then(data => {
-                    const name = data.player.first_name + " " + data.player.last_name;
                     const ptsPpr = data.stats.pts_ppr;
-                    const playerPos = data.player.position;
-
-                    switch(teamNum) {
-                        case 1:
-                            players1[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
-                            populateTeam('team1', players1.slice(i-1, i));
-                            break;
-                        case 2:
-                            players2[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
-                            populateTeam('team2', players2.slice(i-1, i));
-                            break;
-                        case 3:
-                            players3[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
-                            populateTeam('team3', players3.slice(i-1, i));
-                            break;
-                        case 4:
-                            players4[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
-                            populateTeam('team4', players4.slice(i-1, i));
-                            break;
-                        case 5:
-                            players5[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
-                            populateTeam('team5', players5.slice(i-1, i));
-                            break;
-                        case 6:
-                            players6[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
-                            populateTeam('team6', players6.slice(i-1, i));
-                            break;
-                        case 7:
-                            players7[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
-                            populateTeam('team7', players7.slice(i-1, i));
-                            break;
-                        case 8:
-                            players8[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
-                            populateTeam('team8', players8.slice(i-1, i));
-                            break;
+                    
+                    if (!player_array_name.includes(name)) {
+                        switch(teamNum) {
+                            case 1:
+                                players1[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                                populateTeam('team1', players1.slice(i-1, i));
+                                break;
+                            case 2:
+                                players2[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                                populateTeam('team2', players2.slice(i-1, i));
+                                break;
+                            case 3:
+                                players3[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                                populateTeam('team3', players3.slice(i-1, i));
+                                break;
+                            case 4:
+                                players4[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                                populateTeam('team4', players4.slice(i-1, i));
+                                break;
+                            case 5:
+                                players5[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                                populateTeam('team5', players5.slice(i-1, i));
+                                break;
+                            case 6:
+                                players6[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                                populateTeam('team6', players6.slice(i-1, i));
+                                break;
+                            case 7:
+                                players7[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                                populateTeam('team7', players7.slice(i-1, i));
+                                break;
+                            case 8:
+                                players8[i-1] = playerPos + "\xa0\xa0" + name + "\xa0\xa0" + "0.0";
+                                populateTeam('team8', players8.slice(i-1, i));
+                                break;
+                        }
+                        trig = false;
+                        
                     }
-                    trig = false;
                     // Function to populate a team with players
                     function populateTeam(teamId, teamPlayers) {
                         const teamElement = document.getElementById(teamId);
@@ -592,190 +593,204 @@
         }, 200);
         
     }
-    getPlayerName(4046, 1, 1);
     setTimeout(() => {
-        getPlayerName(9226, 1, 2);
+        getPlayerName(4046, 1, 1, 'Patrick Mahomes', 'QB');
+    }, 100);
+    setTimeout(() => {
+        getPlayerName(9226, 1, 2, 'DeVon Achane', 'RB');
     }, 500);
     setTimeout(() => {
-        getPlayerName(2749, 1, 3);
+        getPlayerName(2749, 1, 3, 'Raheem Mostert', 'RB');
     }, 1000);
     setTimeout(() => {
-        getPlayerName(2309, 1, 4);
+        getPlayerName(2309, 1, 4, 'Amari Cooper', 'WR');
     }, 1500);
     setTimeout(() => {
-        getPlayerName(5872, 1, 5);
+        getPlayerName(5872, 1, 5, 'Deebo Samuel', 'WR');
     }, 2000);
     setTimeout(() => {
-        getPlayerName(4217, 1, 6);
+        getPlayerName(4217, 1, 6, 'George Kittle', 'TE');
     }, 2500);
     setTimeout(() => {
-        getPlayerName(1264, 1, 7);
+        getPlayerName(1264, 1, 7, 'Justin Tucker', 'K');
     }, 3000);
     setTimeout(() => {
-        getPlayerName('SF', 1, 8);
+        getPlayerName('SF', 1, 8, 'San Francisco 49ers', 'DEF');
     }, 3500);
     
-    getPlayerName(9758, 2, 1);
     setTimeout(() => {
-        getPlayerName(8205, 2, 2);
+        getPlayerName(9758, 2, 1, 'C.J. Stroud', 'QB');
+    }, 100);
+    setTimeout(() => {
+        getPlayerName(8205, 2, 2, 'Isiah Pacheco', 'RB');
     }, 500);
     setTimeout(() => {
-        getPlayerName(8150, 2, 3);
+        getPlayerName(8150, 2, 3, 'Kyren Williams', 'RB');
     }, 1000);
     setTimeout(() => {
-        getPlayerName(6943, 2, 4);
+        getPlayerName(6943, 2, 4, 'Gabe Davis', 'WR');
     }, 1500);   
     setTimeout(() => {
-        getPlayerName(5872, 2, 5);
+        getPlayerName(5872, 2, 5, 'Deebo Samuel', 'WR');
     }, 2000);    
     setTimeout(() => {
-        getPlayerName(5022, 2, 6);
+        getPlayerName(5022, 2, 6, 'Dallas Goedert', 'TE');
     }, 2500);   
     setTimeout(() => {
-        getPlayerName(4195, 2, 7);
+        getPlayerName(4195, 2, 7, 'Jake Elliot', 'K');
     }, 3000);   
     setTimeout(() => {
-        getPlayerName('PHI', 2, 8);
+        getPlayerName('PHI', 2, 8, 'Philadelphia Eagles', 'DEF');
     }, 3500);
     
-    
-    getPlayerName(6904, 3, 1);
     setTimeout(() => {
-        getPlayerName(4034, 3, 2);
+        getPlayerName(6904, 3, 1, 'Jalen Hurts', 'QB');
+    }, 100);
+    setTimeout(() => {
+        getPlayerName(4034, 3, 2, 'Christian McCaffrey', 'RB');
     }, 500);    
     setTimeout(() => {
-        getPlayerName(5967, 3, 3);
+        getPlayerName(5967, 3, 3, 'Tony Pollard', 'RB');
     }, 1000);  
     setTimeout(() => {
-        getPlayerName(3321, 3, 4);
+        getPlayerName(3321, 3, 4, 'Tyreek Hill', 'WR');
     }, 1500);   
     setTimeout(() => {
-        getPlayerName(5859, 3, 5);
+        getPlayerName(5859, 3, 5, 'A.J. Brown', 'WR');
     }, 2000);    
     setTimeout(() => {
-        getPlayerName(4217, 3, 6);
+        getPlayerName(4217, 3, 6, 'George Kittle', 'TE');
     }, 2500);   
     setTimeout(() => {
-        getPlayerName(1264, 3, 7);
+        getPlayerName(1264, 3, 7, 'Justin Tucker', 'K');
     }, 3000);    
     setTimeout(() => {
-        getPlayerName('PHI', 3, 8);
+        getPlayerName('PHI', 3, 8, 'Philadelphia Eagles', 'DEF');
     }, 3500);
     
-    getPlayerName(6768, 4, 2);
     setTimeout(() => {
-        getPlayerName(8138, 4, 1);
+        getPlayerName(6768, 4, 2, 'Tua Tagovailoa', 'QB');
+    }, 100);
+    setTimeout(() => {
+        getPlayerName(8138, 4, 1, 'James Cook', 'RB');
     }, 500);
     setTimeout(() => {
-        getPlayerName(4034, 4, 3);
+        getPlayerName(4034, 4, 3, 'Christian McCaffrey', 'RB');
     }, 1000);    
     setTimeout(() => {
-        getPlayerName(5859, 4, 4);
+        getPlayerName(5859, 4, 4, 'A.J. Brown', 'WR');
     }, 1500);    
     setTimeout(() => {
-        getPlayerName(2449, 4, 5);
+        getPlayerName(2449, 4, 5, 'Stefon Diggs', 'WR');
     }, 2000);    
     setTimeout(() => {
-        getPlayerName(5022, 4, 6);
+        getPlayerName(5022, 4, 6, 'Dallas Goedert', 'TE');
     }, 2500);    
     setTimeout(() => {
-        getPlayerName(4195, 4, 7);
+        getPlayerName(4195, 4, 7, 'Jake Elliot', 'K');
     }, 3000);    
     setTimeout(() => {
-        getPlayerName('KC', 4, 8);
+        getPlayerName('KC', 4, 8, 'Kansas City Chiefs', 'DEF');
     }, 3500);
     
-    getPlayerName(4984, 5, 1);
     setTimeout(() => {
-        getPlayerName(4034, 5, 2);
+        getPlayerName(4984, 5, 1, 'Josh Allen', 'QB');
+    }, 100);
+    setTimeout(() => {
+        getPlayerName(4034, 5, 2, 'Christian McCaffrey', 'RB');
     }, 500);    
     setTimeout(() => {
-        getPlayerName(6790, 5, 3);
+        getPlayerName(6790, 5, 3, 'D\'Andre Swift', 'RB');
     }, 1000);
     setTimeout(() => {
-        getPlayerName(5859, 5, 4);
+        getPlayerName(5859, 5, 4, 'A.J. Brown', 'WR');
     }, 1500);    
     setTimeout(() => {
-        getPlayerName(2449, 5, 5);
+        getPlayerName(2449, 5, 5, 'Stefon Diggs', 'WR');
     }, 2000);   
     setTimeout(() => {
-        getPlayerName(5022, 5, 6);
+        getPlayerName(5022, 5, 6, 'Dallas Goedert', 'TE');
     }, 2500);    
     setTimeout(() => {
-        getPlayerName(4227, 5, 7);
+        getPlayerName(4227, 5, 7, 'Harrison Butker', 'K');
     }, 3000);    
     setTimeout(() => {
-        getPlayerName('KC', 5, 8);
+        getPlayerName('KC', 5, 8, 'Kansas City Chiefs', 'DEF');
     }, 3500);
         
-    getPlayerName(7523, 6, 2);
     setTimeout(() => {
-        getPlayerName(6790, 6, 1);
+        getPlayerName(9758, 6, 2, 'C.J. Stroud', 'QB');
+    }, 100);
+    setTimeout(() => {
+        getPlayerName(6790, 6, 1, 'D\'Andre Swift', 'RB');
     }, 500);
     setTimeout(() => {
-        getPlayerName(8136, 6, 3);
+        getPlayerName(8136, 6, 3, 'Rachaad White', 'RB');
     }, 1000);    
     setTimeout(() => {
-        getPlayerName(5859, 6, 4);
+        getPlayerName(5859, 6, 4, 'A.J. Brown', 'WR');
     }, 1500);    
     setTimeout(() => {
-        getPlayerName(7525, 6, 5);
+        getPlayerName(7525, 6, 5, 'DeVonta Smith', 'WR');
     }, 2000);    
     setTimeout(() => {
-        getPlayerName(4217, 6, 6);
+        getPlayerName(4217, 6, 6, 'George Kittle', 'TE');
     }, 2500);    
     setTimeout(() => {
-        getPlayerName(4195, 6, 7);
+        getPlayerName(4195, 6, 7, 'Jake Elliot', 'K');
     }, 3000);    
     setTimeout(() => {
-        getPlayerName('BUF', 6, 8);
+        getPlayerName('BUF', 6, 8, 'Buffalo Bills', 'DEF');
     }, 3500);
-        
-    getPlayerName(3294, 7, 1);  
+      
     setTimeout(() => {
-        getPlayerName(9221, 7, 2);
+        getPlayerName(3294, 7, 1, 'Dak Prescott', 'QB');  
+    }, 100);
+    setTimeout(() => {
+        getPlayerName(9221, 7, 2, 'Jahmyr Gibbs', 'RB');
     }, 500);    
     setTimeout(() => {
-        getPlayerName(4034, 7, 3);
+        getPlayerName(4034, 7, 3, 'Christian McCaffrey', 'RB');
     }, 1000);    
     setTimeout(() => {
-        getPlayerName(7525, 7, 4);
+        getPlayerName(7525, 7, 4, 'Devonta Smith', 'WR');
     }, 1500);    
     setTimeout(() => {
-        getPlayerName(2449, 7, 5);
+        getPlayerName(2449, 7, 5, 'Stefon Diggs', 'WR');
     }, 2000);    
     setTimeout(() => {
-        getPlayerName(5001, 7, 6);
+        getPlayerName(5001, 7, 6, 'Dalton Schultz', 'TE');
     }, 2500);    
     setTimeout(() => {
-        getPlayerName(4227, 7, 7);
+        getPlayerName(4227, 7, 7, 'Harrison Butker', 'K');
     }, 3000);    
     setTimeout(() => {    
-        getPlayerName('SF', 7, 8);
+        getPlayerName('SF', 7, 8, 'San Francisco 49ers', 'DEF');
     }, 3500);
     
-    
-    getPlayerName(8183, 8, 2);
     setTimeout(() => {
-        getPlayerName(4034, 8, 1);
+        getPlayerName(8183, 8, 2, 'Brock Purdy', 'QB');
+    }, 100);
+    setTimeout(() => {
+        getPlayerName(4034, 8, 1, 'Christian McCaffrey', 'RB');
     }, 500);    
     setTimeout(() => {
-        getPlayerName(8138, 8, 3);
+        getPlayerName(8138, 8, 3, 'James Cook', 'RB');
     }, 1000);    
     setTimeout(() => {
-        getPlayerName(7525, 8, 4);
+        getPlayerName(7525, 8, 4, 'DeVonta Smith', 'WR');
     }, 1500);    
     setTimeout(() => {
-        getPlayerName(2449, 8, 5);
+        getPlayerName(2449, 8, 5, 'Stefon Diggs', 'WR');
     }, 2000);    
     setTimeout(() => {
-        getPlayerName(1466, 8, 6);
+        getPlayerName(1466, 8, 6, 'Travis Kelce', 'TE');
     }, 2500);    
     setTimeout(() => {
-        getPlayerName(4227, 8, 7);
+        getPlayerName(4227, 8, 7, 'Harrison Butker', 'K');
     }, 3000);    
     setTimeout(() => {
-        getPlayerName('PHI', 8, 8);
+        getPlayerName('PHI', 8, 8, 'Philadelphia Eagles', 'DEF');
     }, 3500);
     setTimeout(() => {
 
