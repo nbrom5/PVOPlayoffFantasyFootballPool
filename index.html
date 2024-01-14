@@ -50,6 +50,7 @@
             width: 225px;
             text-align: left;
             transition: transform 0.2s ease-in-out;
+            display: none;
         }
         
         .list-container {
@@ -216,7 +217,7 @@
           content: "\1F451"; /* Crown emoji */
           box-sizing: content-box;
         }
-        @media only screen and (max-device-width: 480px) {
+        @media only screen and (max-device-width: 480px){
             .trophy {
                 visibility: hidden;
             }
@@ -246,15 +247,68 @@
               right: 80px; /* Adjust the right position as needed */
             }
         }
-        @media only screen and (max-device-width: 480px) {
+        @media only screen and (max-device-width: 480px){
             .body-container {
                 transform: scale(0.8,0.8);
             }
+        }
+        nav {
+            background-color: #333;
+            overflow: hidden;
+            margin-top: 10px;
+            white-space: nowrap;
+        }
+
+        nav a {
+            float: left;
+            display: inline-block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        
+        @media screen and (max-device-width: 600px) {
+            nav a {
+                display: inline;
+                color: white;
+                width: 80%;
+                padding: 14px 16px;
+                text-decoration: none;
+                float: left;
+            }
+        }
+        
+        .nav-icon {
+            display: block;
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 14px 16px;
+            cursor: pointer;
         }
         
     </style>
 </head>
 <body>
+    <nav>
+        <a href="#" onclick="showContent1('team1')">Team 1</a>
+        <a href="#" onclick="showContent1('team2')">Team 2</a>
+        <a href="#" onclick="showContent1('team3')">Team 3</a>
+        <a href="#" onclick="showContent1('team4')">Team 4</a>
+        <a href="#" onclick="showContent2('team5')">Team 5</a>
+        <a href="#" onclick="showContent2('team6')">Team 6</a>
+        <a href="#" onclick="showContent2('team7')">Team 7</a>
+        <a href="#" onclick="showContent2('team8')">Team 8</a>
+        <div class="nav-icon" onclick="toggleNav()">
+        &#9776; <!-- Hamburger icon (three horizontal lines) -->
+        </div>
+    </nav>
     <h1>PVO Playoff Fantasy Football</h1>
     <div class="matchup">
         <div class="team" id="team1">
@@ -358,7 +412,7 @@
             </span>
         </div>
     </div>
-    <div class="body-container">
+    <div class="body-container" id="Section3">
         <div class="list-container">
             <div class="trophy left-trophy">🏆</div>
             <!-- Your content for the bottom section goes here -->
@@ -421,6 +475,46 @@
     var player_array_name = [];
     var player_array_score = [];
     var trig = false;
+    
+    function toggleNav() {
+        var navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(function(link) {
+            link.style.display = link.style.display === 'block' ? 'none' : 'block';
+        });
+    }
+    
+    function showContent1(divId) {
+        // Hide all content divs
+        var contentDivs = document.querySelectorAll('.team');
+        console.log("Test1", contentDivs);
+        contentDivs.forEach(function(div) {
+            div.style.display = 'none';
+        });
+
+        // Show the selected content div
+        var selectedDiv = document.getElementById(divId);
+        console.log("Test2", selectedDiv);
+        if (selectedDiv) {
+            selectedDiv.style.display = 'block';
+        }
+        var listContainer = document.getElementById('Section3');
+        console.log("Test3", listContainer);
+        listContainer.style.display = 'none';
+    }
+    
+    function showContent2(divId) {
+        // Hide all content divs
+        var contentDivs = document.querySelectorAll('.team');
+        contentDivs.forEach(function(div) {
+            div.style.display = 'none';
+        });
+
+        // Show the selected content div
+        var selectedDiv = document.getElementById(divId);
+        if (selectedDiv) {
+            selectedDiv.style.display = 'block';
+        }
+    }
     
     function getPlayerName(id, teamNum, i, name, playerPos) {
         // Sleeper API endpoint for fetching player stats
