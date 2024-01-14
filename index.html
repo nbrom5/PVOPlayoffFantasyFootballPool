@@ -297,6 +297,7 @@
 </head>
 <body>
     <nav>
+        <a href="#" onclick="showStandings()">Standings</a>
         <a href="#" onclick="showContent1('team1')">Team 1</a>
         <a href="#" onclick="showContent1('team2')">Team 2</a>
         <a href="#" onclick="showContent1('team3')">Team 3</a>
@@ -483,6 +484,15 @@
         });
     }
     
+    function showStandings() {
+        var listContainer = document.getElementById('Section3');
+        listContainer.style.display = 'block';
+        var contentDivs = document.querySelectorAll('.team');
+        contentDivs.forEach(function(div) {
+            div.style.display = 'none';
+        });
+    }
+    
     function showContent1(divId) {
         // Hide all content divs
         var contentDivs = document.querySelectorAll('.team');
@@ -514,6 +524,9 @@
         if (selectedDiv) {
             selectedDiv.style.display = 'block';
         }
+        var listContainer = document.getElementById('Section3');
+        console.log("Test3", listContainer);
+        listContainer.style.display = 'none';
     }
     
     function getPlayerName(id, teamNum, i, name, playerPos) {
